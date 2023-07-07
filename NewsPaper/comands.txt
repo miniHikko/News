@@ -1,0 +1,92 @@
+python manage.py shell
+from  news.models import *
+
+#задание №1
+User.objects.create_user('Fren')
+User.objects.create_user('Rei')
+
+
+#задание №2
+Author.objects.create(user_id=1)
+Author.objects.create(user_id=2)
+
+
+#задание №3
+Category.objects.create(subjiect='животные')
+Category.objects.create(subjiect='блогеры')
+Category.objects.create(subjiect='игры')
+Category.objects.create(subjiect='програмирование')
+
+
+#задание №4
+Post.objects.create(WIT='AR', header= "Блогеры програмисты топ 10", post_Author_id=1, text="у меня не получилось найти нормальный текст")
+Post.objects.create(WIT='AR', header= "Блогеры что играют в игры с животными", post_Author_id=1, text="у меня не получилось найти нормальный текст")
+Post.objects.create(WIT='NW', header= "сегодня отличный день чтобы выйти на улицу и поиграть со своим питомцем", post_Author_id=2, text="у меня не получилось найти нормальный текст")
+
+
+#задание №5
+PostCategory.objects.create(post_id=1, category_id=2)
+PostCategory.objects.create(post_id=1, category_id=4)
+PostCategory.objects.create(post_id=2, category_id=1)
+PostCategory.objects.create(post_id=2, category_id=2)
+PostCategory.objects.create(post_id=2, category_id=3)
+PostCategory.objects.create(post_id=3, category_id=1)
+PostCategory.objects.create(post_id=3, category_id=3)
+
+
+#задание №6
+Coment.objects.create(post_coment_id=1, user_coment_id=2, coment_text="мне больше всего понравился номер 2 из списка")
+Coment.objects.create(post_coment_id=2, user_coment_id=2, coment_text="я очень часто смотрю игры от Animalgamer")
+Coment.objects.create(post_coment_id=2, user_coment_id=2, coment_text="обожаю его он самый крутой")
+Coment.objects.create(post_coment_id=3, user_coment_id=1, coment_text="неплохая новость но я видел и лучше")
+Coment.objects.create(post_coment_id=3, user_coment_id=2, coment_text="да что ты знаешь о новостях? сиди и пиши свои статьи")
+
+
+#задание №7
+C = Coment.objects.all()
+C[1].Like()
+P = Post.objects.all()
+P[0].Like()
+P[0].Like()
+P[0].Like()
+P[1].Like()
+P[1].Like()
+P[2].Like()
+P[2].Like()
+P[2].Like()
+P[2].Like()
+P[0].DisLike()
+C[1].Like()
+C[3].Like()
+C[3].Like()
+C[3].Like()
+C[4].Like()
+C[4].Like()
+C[4].DisLike()
+
+
+#задание №8
+A1 = Author.objects.get(pk=1)
+A2 = Author.objects.get(id=2)
+A1.uptade_raiting()
+A2.uptade_raiting()
+
+
+#задание №9
+best_Author = Author.objects.order_by('-raiting').values('user__username', 'raiting').first()
+best_Author
+
+
+#задание №10
+best_Post = Post.objects.order_by('-raiting').values('data_time', 'post_Author__user__username', 'raiting', 'header').first()
+best_Post_preview = Post.objects.order_by('-raiting').first()
+best_Post_preview.preview()
+
+
+#задание №11
+coments = Coment.objects.filter(post_coment=best_Post_preview)
+coments
+
+
+
+
