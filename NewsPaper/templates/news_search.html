@@ -4,7 +4,12 @@
 news
 {% endblock title %}
 {% block content %}
-<h1>Все новости</h1>
+<h1>поиск новостей</h1>
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <h7>сортировка по дате:</h7><input type="date" id="bday" name="bday">
+       <input type="submit" value="Найти" />
+   </form>
 <h2>{{news|length}}</h2>
 {% if news %}
 <table>
@@ -23,7 +28,7 @@ news
 
 </table>
 {% else %}
-<h1>новостей нет</h1>
+<h1>таких новостей нет</h1>
 {%endif%}
 {% if page_obj.has_previous %}
        <a href="?page=1">1</a>
