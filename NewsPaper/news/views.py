@@ -1,3 +1,5 @@
+
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -29,7 +31,12 @@ def create_new(reguest):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/news/')
+        if '/smi/' in reguest.path:
+            Post.WIT = 'NW'
+        elif 'article/' in reguest.path:
+            Post.WIT = 'AR'
     return render(reguest, 'news_edit.html', {"form": form})
+
 
 
 class NewUpdate(UpdateView):
@@ -37,9 +44,13 @@ class NewUpdate(UpdateView):
     model = Post
     template_name = 'news_edit.html'
 
+
     def form_valid(self, form):
         Post = form.save(commit=False)
-        Post.WIT = "NW"
+        if 'smi/' in self.request.path:
+            Post.WIT = 'NW'
+        elif 'article/' in self.request.path:
+            Post.WIT = 'AR'
         return super().form_valid(form)
 
 
@@ -50,7 +61,10 @@ class NewDelete(DeleteView):
 
     def form_valid(self, form):
         Post = form.save(commit=False)
-        Post.WIT = "NW"
+        if 'smi/' in self.request.path:
+            Post.WIT = 'NW'
+        elif 'article/' in self.request.path:
+            Post.WIT = 'AR'
         return super().form_valid(form)
 
 

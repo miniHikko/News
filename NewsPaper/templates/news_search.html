@@ -7,7 +7,6 @@ news
 <h1>поиск новостей</h1>
    <form action="" method="get">
        {{ filterset.form.as_p }}
-       <h7>сортировка по дате:</h7><input type="date" id="bday" name="bday">
        <input type="submit" value="Найти" />
    </form>
 <h2>{{news|length}}</h2>

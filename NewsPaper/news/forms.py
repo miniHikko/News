@@ -4,23 +4,22 @@ from django.core.exceptions import ValidationError
 
 
 class NewsForm(forms.ModelForm):
-    description = forms.CharField(min_length=20)
 
     class Meta:
         model = Post
         fields = [
+            'post_Author',
             'header',
             'text',
             'category',
-
         ]
 
     def clean(self):
         cleaned_data = super().clean()
         name = cleaned_data.get("header")
-        description = cleaned_data.get("text")
+        text = cleaned_data.get("text")
 
-        if name == description:
+        if name == text:
             raise ValidationError(
                 "Описание не должно быть идентично названию."
             )
