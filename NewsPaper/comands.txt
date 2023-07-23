@@ -1,6 +1,6 @@
 python manage.py shell
 from  news.models import *
-
+python manage.py runserver
 #задание №1
 User.objects.create_user('Fren')
 User.objects.create_user('Rei')

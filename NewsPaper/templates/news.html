@@ -5,6 +5,7 @@ news
 {% endblock title %}
 {% block content %}
 <h1>Все новости</h1>
+<button onclick="window.location.href = {% url 'make' %};">Стать автором</button>
 <h2>{{news|length}}</h2>
 {% if news %}
 <table>

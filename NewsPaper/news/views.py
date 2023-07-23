@@ -1,16 +1,16 @@
-
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView
 from .models import Post
 from .filters import NewsFilter
 from .forms import NewsForm
 
 
-class NewsList(ListView):
+class NewsList(LoginRequiredMixin, ListView):
     model = Post
     ordering = '-id'
     template_name = 'news.html'
@@ -18,7 +18,7 @@ class NewsList(ListView):
     paginate_by = 10
 
 
-class NewDetail(DetailView):
+class NewDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'new.html'
     context_object_name = 'new'
@@ -38,12 +38,10 @@ def create_new(reguest):
     return render(reguest, 'news_edit.html', {"form": form})
 
 
-
-class NewUpdate(UpdateView):
+class NewUpdate(LoginRequiredMixin, UpdateView):
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
-
 
     def form_valid(self, form):
         Post = form.save(commit=False)
@@ -54,7 +52,7 @@ class NewUpdate(UpdateView):
         return super().form_valid(form)
 
 
-class NewDelete(DeleteView):
+class NewDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('news_list')
@@ -68,7 +66,7 @@ class NewDelete(DeleteView):
         return super().form_valid(form)
 
 
-class news_search(ListView):
+class news_search(LoginRequiredMixin, ListView):
     model = Post
     ordering = '-id'
     context_object_name = 'news'
@@ -84,3 +82,12 @@ class news_search(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+
+
+@login_required
+def Author_make(request):
+    user = request.user
+    author_group = Group.objects.get(name='author')
+    if not request.user.groups.filter(name='author').exists():
+        author_group.user_set.add(user)
+    return redirect('/news/')
