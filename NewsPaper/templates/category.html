@@ -1,0 +1,50 @@
+{% extends 'flatpages/default.html' %}
+{% block title %}
+category news
+{% endblock title %}
+{% block content %}
+<h1>новости категорий</h1>
+<a href="{% url 'make' %}" class="btn btn-secondary btn-sm">Стать автором</a>
+<a href="{% url  %}" class="btn btn-secondary btn-sm">Подписаться на категорию</a>
+<h2>{{news|length}}</h2>
+{% if news %}
+<table>
+    <tr>
+        <td>заголовок</td>
+        <td>дата публикации</td>
+        <td>описание</td>
+         <td>категория</td>
+    </tr>
+    {% for new in news%}
+    <tr>
+        <td>{{ post.header|censor }}</td>
+        <td>{{ post.data_time }}</td>
+        <td>{{ post.text|truncatewords:20 }}</td>
+        <td>{{ post.category}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+{% else %}
+<h1>новостей нет</h1>
+{%endif%}
+{% if page_obj.has_previous %}
+<a href="?page=1">1</a>
+{% if page_obj.previous_page_number != 1 %}
+...
+<a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+{% endif %}
+{% endif %}
+
+{# Информация о текущей странице #}
+{{ page_obj.number }}
+
+{# Информация о следующих страницах #}
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+{% if paginator.num_pages != page_obj.next_page_number %}
+...
+<a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+{% endif %}
+{% endif %}
+{% endblock content %}
