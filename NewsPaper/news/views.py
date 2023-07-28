@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView
-from .models import Post
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView, CreateView
+from .models import Post, Category
 from .filters import NewsFilter
 from .forms import NewsForm
 from django.contrib.auth.decorators import permission_required
@@ -98,3 +98,13 @@ def Author_make(request):
     if not request.user.groups.filter(name='author').exists():
         author_group.user_set.add(user)
     return redirect('/news/')
+
+
+class categorys(LoginRequiredMixin, CreateView):
+    model = Category
+    template_name = 'category.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = Post.objects.filter(category__id=self.kwargs['pk'])
+        return context
