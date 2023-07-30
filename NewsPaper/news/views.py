@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView, CreateView
@@ -9,6 +10,7 @@ from .models import Post, Category
 from .filters import NewsFilter
 from .forms import NewsForm
 from django.contrib.auth.decorators import permission_required
+from django.core.mail import EmailMultiAlternatives
 
 
 class NewsList(LoginRequiredMixin, ListView):
@@ -39,6 +41,16 @@ def create_new(reguest):
             Post.WIT = 'NW'
         elif 'article/' in reguest.path:
             Post.WIT = 'AR'
+
+        html_content = render_to_string('sub.html', )
+        msg = EmailMultiAlternatives(
+            subject=f'{form.cleaned_data["header"]}',
+            body=form.cleaned_data['text'],
+            from_email='mrmolocko@yandex.ru',
+            to=[Category.objects.all('subscribers__email')]
+        )
+        msg.attach_alternative(html_content, "text/html")  # добавляем html
+        msg.send()
     return render(reguest, 'news_edit.html', {"form": form})
 
 
@@ -100,11 +112,16 @@ def Author_make(request):
     return redirect('/news/')
 
 
-class categorys(LoginRequiredMixin, CreateView):
-    model = Category
-    template_name = 'category.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['post'] = Post.objects.filter(category__id=self.kwargs['pk'])
-        return context
+@login_required
+def category_view(request, pk):
+    context = {
+        'posts': Post.objects.filter(category__id=pk),
+    }
+    if request.method == 'POST':
+        user = request.user
+        action = request.POST.get("confirm")
+        if action:
+            category = Category.objects.get(pk=pk)
+            category.subscribers.add(user)
+            category.save()
+    return render(request=request, template_name='category.html', context=context)

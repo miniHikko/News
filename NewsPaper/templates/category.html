@@ -5,9 +5,12 @@ category news
 {% block content %}
 <h1>новости категорий</h1>
 <a href="{% url 'make' %}" class="btn btn-secondary btn-sm">Стать автором</a>
-<a href="{% url  %}" class="btn btn-secondary btn-sm">Подписаться на категорию</a>
-<h2>{{news|length}}</h2>
-{% if news %}
+ <form method="post">
+        {% csrf_token %}
+        <button name="confirm" value="confirmed">Я хочу подписаться на эту категорию</button>
+    </form>
+<h2>{{posts|length}}</h2>
+{% if posts %}
 <table>
     <tr>
         <td>заголовок</td>
@@ -15,9 +18,9 @@ category news
         <td>описание</td>
          <td>категория</td>
     </tr>
-    {% for new in news%}
+    {% for post in posts%}
     <tr>
-        <td>{{ post.header|censor }}</td>
+        <td>{{ post.header }}</td>
         <td>{{ post.data_time }}</td>
         <td>{{ post.text|truncatewords:20 }}</td>
         <td>{{ post.category}}</td>
