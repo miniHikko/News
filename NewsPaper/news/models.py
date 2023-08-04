@@ -21,7 +21,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     subjiect = models.CharField(max_length=255, unique=True)
-    subscribers = models.ManyToManyField(User, related_name='cater')
+    subscribers = models.ManyToManyField(User, related_name='sub')
 
 
 class Post(models.Model):
@@ -53,6 +53,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.header.title()}: {self.text[:20]}({self.raiting})'
+
+    def get_url(self):
+        return f'/news/{self.id}'
 
 
 class PostCategory(models.Model):

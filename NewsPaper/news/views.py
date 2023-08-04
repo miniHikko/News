@@ -27,37 +27,48 @@ class NewDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'new'
 
 
-@permission_required('news.add_Post',
-                     'news.change_Post',
-                     'news.view_Post', )
+@permission_required('news.add_post',
+                     'news.change_post',
+                     'news.view_post', )
 def create_new(reguest):
     form = NewsForm
     if reguest.method == "POST":
         form = NewsForm(reguest.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/news/')
-        if '/smi/' in reguest.path:
-            Post.WIT = 'NW'
-        elif 'article/' in reguest.path:
-            Post.WIT = 'AR'
+            post = form.save()
+            if '/smi/' in reguest.path:
+                Post.WIT = 'NW'
+            elif 'article/' in reguest.path:
+                Post.WIT = 'AR'
 
-        html_content = render_to_string('sub.html', )
-        msg = EmailMultiAlternatives(
-            subject=f'{form.cleaned_data["header"]}',
-            body=form.cleaned_data['text'],
-            from_email='mrmolocko@yandex.ru',
-            to=[Category.objects.all('subscribers__email')]
-        )
-        msg.attach_alternative(html_content, "text/html")  # добавляем html
-        msg.send()
+            header = post.header
+            text = post.text
+            subscribers_email = []
+
+            categoris = post.category.all()
+            for cagegory in categoris:
+                subscribers_users = cagegory.subscribers.all()
+                for sub_users in subscribers_users:
+                    subscribers_email.append(sub_users.email)
+
+            html_content = render_to_string('sub.html', {'post': post})
+            msg = EmailMultiAlternatives(
+                subject=header,
+                body=text,
+                from_email='mrmolocko@yandex.ru',
+                to=subscribers_email
+            )
+            msg.attach_alternative(html_content, "text/html")  # добавляем html
+            msg.send()
+            return HttpResponseRedirect('/news/')
+
     return render(reguest, 'news_edit.html', {"form": form})
 
 
 class NewUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = ('news.add_Post',
-                           'news.change_Post',
-                           'news.view_Post',)
+    permission_required = ('news.add_post',
+                           'news.change_post',
+                           'news.view_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'

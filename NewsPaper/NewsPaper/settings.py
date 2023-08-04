@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news',
-    'acounts',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_filters',
@@ -44,9 +43,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_apscheduler',
 
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -138,7 +137,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 
 ]
-
+SITE_URL = 'http://127.0.0.1:8000'
 SITE_ID = 1
 
 LOGIN_URL = '/accounts/login/'
@@ -147,7 +146,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {'signup': 'news.forms.BasicSignupForm'}
 
@@ -156,3 +155,13 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'mrmolocko'
 EMAIL_HOST_PASSWORD = 'mini_hikko'
 EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru'
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+ADMINS = [
+    ('alex', 'mrmoloko88@gmail.com'),
+]
+SERVER_EMAIL = 'mrmolocko@yandex.ru'
