@@ -1,16 +1,20 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView, CreateView
 from .models import Post, Category
 from .filters import NewsFilter
 from .forms import NewsForm
 from django.contrib.auth.decorators import permission_required
 from django.core.mail import EmailMultiAlternatives
+from .tasks import hello, printer, _news
 
 
 class NewsList(LoginRequiredMixin, ListView):
@@ -136,3 +140,12 @@ def category_view(request, pk):
             category.subscribers.add(user)
             category.save()
     return render(request=request, template_name='category.html', context=context)
+
+
+class IndexView(View):
+    def get(self, request):
+        printer.apply_async([10])
+
+        hello.delay()
+        #_news()
+        return HttpResponse('Hello!')

@@ -1,6 +1,7 @@
 python manage.py shell
 from  news.models import *
 python manage.py runserver
+celery -A NewsPaper worker -l INFO --pool=solo
 #задание №1
 User.objects.create_user('Fren')
 User.objects.create_user('Rei')

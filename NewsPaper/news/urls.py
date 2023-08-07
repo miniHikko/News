@@ -1,7 +1,7 @@
 from django.template.defaultfilters import upper
 from django.urls import path, include
 # Импортируем созданное нами представление
-from .views import NewsList, NewDetail, create_new, news_search, NewDelete, NewUpdate, Author_make, category_view
+from .views import NewsList, NewDetail, create_new, news_search, NewDelete, NewUpdate, Author_make, category_view, IndexView
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -16,5 +16,5 @@ urlpatterns = [
     path('<int:pk>/article/delete/', NewDelete.as_view(), name='news_delete'),
     path('make/', Author_make, name='make'),
     path('categories/<int:pk>/', category_view, name='categorys'),
-
+    path('hello/', IndexView.as_view()),
 ]
