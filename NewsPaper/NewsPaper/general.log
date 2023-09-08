@@ -1,0 +1,20 @@
+INFO 2023-09-07 21:57:27,787 Watching for file changes with StatReloader autoreload
+ERROR 2023-09-07 21:57:27,796 dfjfjpodjfpojfpojdfpofpo[fdodfo[jfdpojfdspojfdpofjdfodjofds]] views
+INFO 2023-09-07 21:57:50,781 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\news\views.py changed, reloading. autoreload
+INFO 2023-09-07 21:57:51,521 Watching for file changes with StatReloader autoreload
+INFO 2023-09-07 21:57:51,534 dfjfjpodjfpojfpojdfpofpo[fdodfo[jfdpojfdspojfdpofjdfodjofds]] views
+INFO 2023-09-07 21:57:53,815 "GET /news/ HTTP/1.1" 200 3102 basehttp
+INFO 2023-09-08 21:50:55,836 Watching for file changes with StatReloader autoreload
+ERROR 2023-09-08 21:50:55,865 dfjfjpodjfpojfpojdfpofpo[fdodfo[jfdpojfdspojfdpofjdfodjofds]] views
+INFO 2023-09-08 21:53:44,625 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\news\views.py changed, reloading. autoreload
+INFO 2023-09-08 21:53:45,453 Watching for file changes with StatReloader autoreload
+INFO 2023-09-08 21:56:10,374 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\NewsPaper\settings.py changed, reloading. autoreload
+INFO 2023-09-08 21:56:11,127 Watching for file changes with StatReloader autoreload
+INFO 2023-09-08 21:56:25,634 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\NewsPaper\settings.py changed, reloading. autoreload
+INFO 2023-09-08 21:56:26,353 Watching for file changes with StatReloader autoreload
+INFO 2023-09-08 21:58:15,712 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\NewsPaper\settings.py changed, reloading. autoreload
+INFO 2023-09-08 21:58:16,451 Watching for file changes with StatReloader autoreload
+INFO 2023-09-08 21:58:35,278 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\NewsPaper\settings.py changed, reloading. autoreload
+INFO 2023-09-08 21:58:36,027 Watching for file changes with StatReloader autoreload
+INFO 2023-09-08 21:59:26,803 C:\Users\mrmol\PycharmProjects\pythonProject8\NewsPaper\NewsPaper\settings.py changed, reloading. autoreload
+INFO 2023-09-08 21:59:27,512 Watching for file changes with StatReloader autoreload

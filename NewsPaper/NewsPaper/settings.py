@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+
 ]
 
 ROOT_URLCONF = 'NewsPaper.urls'
@@ -166,9 +167,115 @@ ADMINS = [
 ]
 SERVER_EMAIL = 'mrmolocko@yandex.ru'
 
-
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style': '{',
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+        'nosimple': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(pathname)s'
+
+        },
+        'nonosimple': {
+            'format': ' %(levelname)s %(asctime)s %(pathname)s %(message)s  %(exc_info)s'
+        },
+        'mod': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(module)s'
+        },
+        'errer': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(pathname)s %(exc_info)s'
+
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'consw': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'nosimple'
+        },
+        'conse': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'nonosimple'
+        },
+        'modul': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': (BASE_DIR / 'NewsPaper/general.log'),
+            'formatter': 'mod'
+        },
+        'erlog': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': (BASE_DIR / 'NewsPaper/errors.log'),
+            'formatter': 'errer'
+        },
+        'suclog': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': (BASE_DIR / 'NewsPaper/security.log'),
+            'formatter': 'mod'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'consw', 'conse', 'modul', ],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'erlog'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'erlog'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['erlog'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['erlog'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['suclog'],
+            'level': 'DEBUG',
+            'propagate': False,
+        }
+    }
+}
